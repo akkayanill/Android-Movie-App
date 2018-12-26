@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="100dp"
+        android:layout_height="135dp"
+        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_marginTop="15dp"
+        android:text="title"
+        android:textSize="27dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/imageView"
+        />
+
+    <TextView
+        android:id="@+id/ratingTextView"
+        android:text="rating"
+        android:textSize="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/titleTextView"
+        android:layout_toRightOf="@+id/imageView"
+        />
+
+    <TextView
+        android:id="@+id/durationTextView"
+        android:text="Duration"
+        android:textSize="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ratingTextView"
+        android:layout_toRightOf="@+id/imageView"
+        />
+    <TextView
+        android:id="@+id/genreTextView"
+        android:text="Genre"
+        android:textSize="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/durationTextView"
+        android:layout_toRightOf="@+id/imageView"
+        />
+
+
+
+</RelativeLayout>
