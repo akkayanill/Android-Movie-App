@@ -98,9 +98,30 @@
     <Button
         android:id="@+id/goBackButton"
         android:layout_width="100dp"
-        android:layout_height="50dp"
+        android:layout_height="54dp"
         android:text="Back"
         android:layout_marginTop="30dp"
+        android:layout_marginLeft="5dp"
         android:layout_below="@+id/castLabel" />
+
+
+    <com.like.LikeButton
+
+        android:id="@+id/addToFavorites"
+
+        app:icon_type="heart"
+        app:anim_scale_factor="1.4"
+
+        app:icon_size="13dp"
+        android:layout_width="100dp"
+        android:layout_height="55dp"
+
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="5dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/castLabel"
+
+        />
+
 
 </RelativeLayout >

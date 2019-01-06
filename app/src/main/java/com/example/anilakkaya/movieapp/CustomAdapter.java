@@ -2,6 +2,10 @@ package com.example.anilakkaya.movieapp;
 
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,19 +13,28 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.InputStream;
+import java.util.ArrayList;
+
 public class CustomAdapter extends BaseAdapter {
 
     private Context context;
     Movie[] movies;
-    int[] IMAGES = {R.drawable.money,R.drawable.money,R.drawable.money,R.drawable.money,R.drawable.money};
+    private ArrayList<Movie> favoriteMovies;
+//    int[] IMAGES = {R.drawable.money,R.drawable.money,R.drawable.money,R.drawable.money,R.drawable.money};
+
+
     /***
      * Consructor for Adapter
      * @param context
-     * @param movies
+     * @param favoriteMovies
      */
-    public CustomAdapter(Context context, Movie[] movies) {
+    //public CustomAdapter(Context context, ArrayList<Movie> movies) {
+    public CustomAdapter(Context context, ArrayList<Movie> favoriteMovies) {
         this.context = context;
-        this.movies = movies;
+//        this.movies = movies;
+        this.favoriteMovies = favoriteMovies;
+        movies = favoriteMovies.toArray(new Movie[favoriteMovies.size()]);
     }
 
     @Override
@@ -48,12 +61,36 @@ public class CustomAdapter extends BaseAdapter {
 
         Movie currentMovie = movies[i];
 
-        imageView.setImageResource(IMAGES[i]); //TODO : fix image issue later
+        new CustomAdapter.DownloadImageTask(imageView).execute(currentMovie.getImage());
         textView_title.setText(currentMovie.getTitle());
         textView_duration.setText(String.valueOf(currentMovie.getRuntime()));
         textView_rating.setText(String.valueOf(currentMovie.getRating()));
         textView_genre.setText(currentMovie.getGenre());
 
         return view;
+    }
+
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+        }
     }
 }

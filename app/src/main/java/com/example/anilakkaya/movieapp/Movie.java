@@ -7,6 +7,9 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 public class Movie implements Serializable {
+
+    private Boolean isFavorite = false;
+
     @SerializedName("Title")
     private String title;
     @SerializedName("Released")
@@ -46,6 +49,11 @@ public class Movie implements Serializable {
         this.plot = plot;
         this.actors = actors;
     }
+
+    /***
+     * Getters
+     *
+     */
     public String getTitle() {
         return title;
     }
@@ -59,9 +67,9 @@ public class Movie implements Serializable {
         return genre;
     }
     public String getDirector() { return director; }
-
+    public Boolean getFavorite() { return isFavorite; }
+    public Boolean isFavorite() { return isFavorite; }
     public String getActors() { return actors; }
-
     public String getPlot() { return plot; }
     public String getImage() {
         return image;
@@ -72,4 +80,11 @@ public class Movie implements Serializable {
     public String toString() {
         return title + " " + release + " ";
     }
+
+    /***
+     * Setters
+     *
+     */
+    public void setFavorite(Boolean isFavorite) { this.isFavorite = isFavorite; }
 }
+

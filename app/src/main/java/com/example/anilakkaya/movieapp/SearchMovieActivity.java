@@ -2,46 +2,32 @@ package com.example.anilakkaya.movieapp;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.Image;
-import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Editable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.gson.Gson;
 import org.json.*;
-import org.w3c.dom.Text;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
+
 public class SearchMovieActivity extends AppCompatActivity {
 
     private EditText searchTextView;
     private Button searchButton;
+    private Button favoritesButton;
     private ImageView searchImageView;
     private ProgressDialog pd;
     private Movie currentMovie;
-//    private ArrayList<Movie> movies = new ArrayList<Movie>();
+    private ArrayList<Movie> movies = new ArrayList<Movie>();
     RequestQueue queue;
     private String KEY = "KEY";
 
@@ -52,7 +38,12 @@ public class SearchMovieActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search_movie);
 
         setupObjects();
-
+        favoritesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goToFavoritesScreen(movies);
+            }
+        });
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,7 +57,6 @@ public class SearchMovieActivity extends AppCompatActivity {
                     String newUrl = url.concat(text).concat(apiKey);
                     getJson(newUrl);
                 }
-
             }
         });
 
@@ -77,8 +67,6 @@ public class SearchMovieActivity extends AppCompatActivity {
         pd.setCancelable(false);
         pd.show();
         retrieveStream(url);
-        Log.e("movie","basladi");
-
     }
     private void retrieveStream(String url){
         queue = Volley.newRequestQueue(this);
@@ -95,14 +83,14 @@ public class SearchMovieActivity extends AppCompatActivity {
                             String director = obj.getString("Title");
                             String image = obj.getString("Poster");
                             Double rating = obj.getDouble("imdbRating");
-                            Log.e("done","rating :" + rating);
+
                             String plot = obj.getString("Plot");
                             String actors = obj.getString("Actors");
 
                             currentMovie = new Movie(title, release, plot, runtime, genre, director, image,rating,actors);
                             pd.dismiss();
                             Log.e("done","DONE");
-                            goToNextScreen(currentMovie);
+                            goToMovieDetailScreen(currentMovie);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -118,9 +106,14 @@ public class SearchMovieActivity extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
-    private void goToNextScreen(Movie movie) {
+    private void goToMovieDetailScreen(Movie movie) {
         Intent intent = new Intent(this,MovieDetailActivity.class);
         intent.putExtra(KEY,movie);
+        startActivity(intent);
+    }
+    private void goToFavoritesScreen(ArrayList<Movie> movies) {
+        Intent intent = new Intent(this,FavoriteMoviesActivity.class);
+        intent.putExtra(KEY,movies);
         startActivity(intent);
     }
 
@@ -129,6 +122,7 @@ public class SearchMovieActivity extends AppCompatActivity {
         searchImageView.setImageResource(R.drawable.popcorn);
 
         searchButton = findViewById(R.id.search_button);
+        favoritesButton = findViewById(R.id.favorites_button);
 
         searchTextView = findViewById(R.id.search_textView);
         searchTextView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
